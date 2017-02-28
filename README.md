@@ -1,21 +1,13 @@
-# Whitelist Cloudflare IPs 
-Bash script for whitelisting cloudflare ips as well as setting nginx config to show real ips.
-Also opens port 2408 to cloudflare for railgun setup. To disable the railgun setup remove the line that opens port 2408. Otherwise create a new bash script ``` touch cloudflarewhitelister.sh ``` , copy and paste the contents into the file. Set the file to be executable chmod +x cloudflarewhitelister.sh 
-And just set it to run a couple times a day. 
+# Nginx Real IP for Cloudflare IPs
+Bash script for setting nginx config to show real ips.
 
 
 ```
 #!/bin/bash
 echo "#Cloudflare" > /etc/nginx/conf.d/00_real_ip_cloudflare_00.conf;
-        iptables -F cloudflare;
-        iptables -N cloudflare;
 for i in 'curl https://www.cloudflare.com/ips-v4'; do
-        iptables -A cloudflare -p tcp --sport 2408 -s $i -j ACCEPT;
-        iptables -A cloudflare -p tcp -m multiport --dports http,https -s $i -j ACCEPT;
         echo "set_real_ip_from $i;" >> /etc/nginx/conf.d/00_real_ip_cloudflare_00.conf;
 done
-
-iptables-save > /etc/sysconfig/iptables
 echo "real_ip_header CF-Connecting-IP;" >> /etc/nginx/conf.d/00_real_ip_cloudflare_00.conf;
 ```
 
