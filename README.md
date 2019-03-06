@@ -1,18 +1,9 @@
 # Nginx Real IP for Cloudflare IPs
 Bash script for setting nginx config to show real ips.
 
-Cut down version of [Oasis Fleeting's whitelister and nginx real ips script](https://github.com/oasisfleeting/cloudflare-whitelister-nginx-real-ip) which also sets ip-tables rules. Thanks to them for the initial script.
-
-We use UFW and have a separate script for that so only want this to do the
-nginx real ip settings.
-
 ```
 #!/bin/bash
-echo "#Cloudflare" > /etc/nginx/conf.d/00_real_ip_cloudflare_00.conf;
-for i in 'curl https://www.cloudflare.com/ips-v4'; do
-        echo "set_real_ip_from $i;" >> /etc/nginx/conf.d/00_real_ip_cloudflare_00.conf;
-done
-echo "real_ip_header CF-Connecting-IP;" >> /etc/nginx/conf.d/00_real_ip_cloudflare_00.conf;
+...
 ```
 
 # Nginx Real IP
@@ -39,5 +30,6 @@ http://nginx.org/en/docs/http/ngx_http_realip_module.html
    set_real_ip_from   2803:f800::/32;
    set_real_ip_from   2405:b500::/32;
    set_real_ip_from   2405:8100::/32;
+   ...
    real_ip_header     CF-Connecting-IP;
 ```
